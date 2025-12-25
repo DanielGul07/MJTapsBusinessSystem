@@ -132,7 +132,7 @@ td{padding:18px}
 
 <div id="productsTab" class="tab-content active">
 <div class="container">
-<div class="header"><h1>Master Products</h1><p>Product catalog with cost breakdowns</p></div>
+<div class="header"><h1>Master Products</h1><p>Product catalogue with cost breakdowns</p></div>
 <div class="controls">
 <button class="btn btn-primary" onclick="openModal()">✚ Add Product</button>
 <button class="btn btn-secondary" onclick="exportData()">💾 Export</button>
@@ -199,7 +199,7 @@ td{padding:18px}
 </div>
 
 <script type="module">
-const PW="bilal2024";
+const PW="sib123";
 window.checkPass=()=>{if(document.getElementById('pass').value===PW){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';sessionStorage.setItem('a','1')}else{document.getElementById('err').style.display='block';document.getElementById('pass').value='';setTimeout(()=>document.getElementById('err').style.display='none',3000)}};
 if(sessionStorage.getItem('a')==='1'){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block'}
 window.logout=()=>{if(confirm('Logout?')){sessionStorage.clear();location.reload()}};
