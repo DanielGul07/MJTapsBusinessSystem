@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bilal's Business System</title>
+<title>MJ Taps Business System</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Poppins',sans-serif;background:#0a0a1a;min-height:100vh;color:#fff}body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%,rgba(120,119,198,0.4) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,119,198,0.4) 0%,transparent 50%);z-index:-1}
@@ -168,7 +168,7 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 
 <div id="productsTab" class="tab-content active">
 <div class="container">
-<div class="header"><h1>Master Products</h1><p>Product catalog with cost breakdowns</p></div>
+<div class="header"><h1>Master Products</h1><p>Product catalogue with cost breakdowns</p></div>
 <div class="controls">
 <button class="btn btn-primary" onclick="openModal()">✚ Add Product</button>
 <button class="btn btn-secondary" onclick="exportData()">💾 Export</button>
@@ -246,7 +246,7 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 </div>
 
 <script type="module">
-const PW="bilal2024";
+const PW="sib123";
 window.checkPass=()=>{if(document.getElementById('pass').value===PW){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';sessionStorage.setItem('a','1')}else{document.getElementById('err').style.display='block';document.getElementById('pass').value='';setTimeout(()=>document.getElementById('err').style.display='none',3000)}};
 if(sessionStorage.getItem('a')==='1'){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block'}
 window.logout=()=>{if(confirm('Logout?')){sessionStorage.clear();location.reload()}};
