@@ -1,4 +1,4 @@
-window.onclick=e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='orderModal')closeOrderModal();if(e.target.id==='restockModal')closeRestockModal()};<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -330,6 +330,7 @@ window.exportRestock=()=>{const data=JSON.stringify(restocks,null,2);const blob=
 window.filterRestock=()=>{const s=document.getElementById('searchRestock').value.toLowerCase();const f=restocks.filter(r=>r.prodCode.toLowerCase().includes(s)||r.desc.toLowerCase().includes(s));displayRestocks(f)};
 
 window.onclick=e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='orderModal')closeOrderModal();if(e.target.id==='restockModal')closeRestockModal()};
+
 </script>
 </body>
 </html>
