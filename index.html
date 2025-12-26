@@ -73,20 +73,21 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 <div id="loginScreen">
 <div class="login-box">
 <h1>🔒 Access</h1>
-<input type="password" id="pass" placeholder="Password" onkeypress="if(event.key==='Enter')checkPass()">
-<button onclick="checkPass()">Unlock</button>
+<input type="password" id="pass" placeholder="Password">
+<button id="loginBtn">Unlock</button>
 <p class="err" id="err">❌ Incorrect</p>
+</div>
 </div>
 
 <div id="restockModal" class="modal">
 <div class="modal-content">
-<span class="close" onclick="closeRestockModal()">&times;</span>
+<span class="close" id="closeRestock">&times;</span>
 <div class="modal-header"><h2 id="rtitle">Add Restock</h2></div>
-<form id="rform" onsubmit="saveRestock(event)">
+<form id="rform">
 <div class="form-grid">
 <div class="form-group"><label>Date Ordered *</label><input type="date" id="rDateOrd" required></div>
 <div class="form-group"><label>Date Arrived *</label><input type="date" id="rDateArr" required></div>
-<div class="form-group"><label>Product Code *</label><select id="rProd" onchange="loadRestockProduct()" required><option value="">Select Product</option></select></div>
+<div class="form-group"><label>Product Code *</label><select id="rProd" required><option value="">Select Product</option></select></div>
 <div class="form-group"><label>Description</label><input type="text" id="rDesc" readonly style="background:rgba(255,255,255,0.03)"></div>
 <div class="form-group"><label>Colour</label><input type="text" id="rCol" readonly style="background:rgba(255,255,255,0.03)"></div>
 <div class="form-group"><label>Variant</label><input type="text" id="rVar" readonly style="background:rgba(255,255,255,0.03)"></div>
@@ -95,42 +96,41 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 </div>
 <div class="cost-section">
 <h3>💰 Cost Breakdown Calculator</h3>
-<div class="form-group"><label>Quantity (for calculation)</label><input type="number" id="rQty" value="1" min="1" oninput="calcRestock()"></div>
-<div class="cost-input"><div><label>1. Unit Cost Total</label><input type="number" id="rt1" step="0.01" oninput="calcRestock()"></div><div class="cost-result"><label>Per Unit</label><div id="rp1">£0.00</div></div></div>
-<div class="cost-input"><div><label>2. Shipping Total</label><input type="number" id="rt2" step="0.01" oninput="calcRestock()"></div><div class="cost-result"><label>Per Unit</label><div id="rp2">£0.00</div></div></div>
-<div class="cost-input"><div><label>3. Storage Total</label><input type="number" id="rt3" step="0.01" oninput="calcRestock()"></div><div class="cost-result"><label>Per Unit</label><div id="rp3">£0.00</div></div></div>
-<div class="cost-input"><div><label>4. Delivery Total</label><input type="number" id="rt4" step="0.01" oninput="calcRestock()"></div><div class="cost-result"><label>Per Unit</label><div id="rp4">£0.00</div></div></div>
-<div class="cost-input"><div><label>5. Packaging Total</label><input type="number" id="rt5" step="0.01" oninput="calcRestock()"></div><div class="cost-result"><label>Per Unit</label><div id="rp5">£0.00</div></div></div>
-<div class="cost-input"><div><label>6. Other Total</label><input type="number" id="rt6" step="0.01" oninput="calcRestock()"></div><div class="cost-result"><label>Per Unit</label><div id="rp6">£0.00</div></div></div>
+<div class="form-group"><label>Quantity (for calculation)</label><input type="number" id="rQty" value="1" min="1"></div>
+<div class="cost-input"><div><label>1. Unit Cost Total</label><input type="number" id="rt1" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="rp1">£0.00</div></div></div>
+<div class="cost-input"><div><label>2. Shipping Total</label><input type="number" id="rt2" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="rp2">£0.00</div></div></div>
+<div class="cost-input"><div><label>3. Storage Total</label><input type="number" id="rt3" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="rp3">£0.00</div></div></div>
+<div class="cost-input"><div><label>4. Delivery Total</label><input type="number" id="rt4" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="rp4">£0.00</div></div></div>
+<div class="cost-input"><div><label>5. Packaging Total</label><input type="number" id="rt5" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="rp5">£0.00</div></div></div>
+<div class="cost-input"><div><label>6. Other Total</label><input type="number" id="rt6" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="rp6">£0.00</div></div></div>
 <div class="cost-total"><h4>TOTAL COST PER UNIT</h4><div class="amount" id="rtotal">£0.00</div></div>
 <div class="cost-total" style="margin-top:10px"><h4>TOTAL ORDER VALUE</h4><div class="amount" id="rorderval">£0.00</div></div>
 </div>
 <div class="form-group"><label>Notes</label><input type="text" id="rNotes"></div>
 <div class="form-actions">
 <button type="submit" class="btn btn-primary">💾 Save Restock</button>
-<button type="button" class="btn btn-danger" onclick="closeRestockModal()">✖ Cancel</button>
+<button type="button" class="btn btn-danger" id="cancelRestock">✖ Cancel</button>
 </div>
 </form>
-</div>
 </div>
 </div>
 
 <div id="orderModal" class="modal">
 <div class="modal-content">
-<span class="close" onclick="closeOrderModal()">&times;</span>
+<span class="close" id="closeOrder">&times;</span>
 <div class="modal-header"><h2 id="otitle">Add Order</h2></div>
-<form id="oform" onsubmit="saveOrder(event)">
+<form id="oform">
 <div style="margin-bottom:20px"><label style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9)"><input type="checkbox" id="isSample" style="width:auto"> This is a Sample Order (bypasses alerts)</label></div>
 <div class="form-grid">
 <div class="form-group"><label>Order Number *</label><input type="text" id="oNum" required></div>
 <div class="form-group"><label>Date *</label><input type="date" id="oDate" required></div>
 <div class="form-group"><label>Customer *</label><input type="text" id="oCust" required></div>
-<div class="form-group"><label>Product Code *</label><select id="oProd" onchange="loadProduct()" required><option value="">Select Product</option></select></div>
+<div class="form-group"><label>Product Code *</label><select id="oProd" required><option value="">Select Product</option></select></div>
 <div class="form-group"><label>Description</label><input type="text" id="oDesc" readonly style="background:rgba(255,255,255,0.03)"></div>
 <div class="form-group"><label>Colour</label><input type="text" id="oCol" readonly style="background:rgba(255,255,255,0.03)"></div>
 <div class="form-group"><label>Variant</label><input type="text" id="oVar" readonly style="background:rgba(255,255,255,0.03)"></div>
-<div class="form-group"><label>Quantity *</label><input type="number" id="oQty" min="1" required oninput="calcOrder()"></div>
-<div class="form-group"><label>Unit Sale Price (£) *</label><input type="number" id="oPrice" step="0.01" required oninput="calcOrder()"></div>
+<div class="form-group"><label>Quantity *</label><input type="number" id="oQty" min="1" required></div>
+<div class="form-group"><label>Unit Sale Price (£) *</label><input type="number" id="oPrice" step="0.01" required></div>
 <div class="form-group"><label>Total Sale Price</label><input type="number" id="oTotal" readonly style="background:rgba(255,255,255,0.03)"></div>
 <div class="form-group"><label>Standard Unit Price</label><input type="number" id="oStd" readonly style="background:rgba(255,255,255,0.03)"></div>
 <div class="form-group"><label>Standard Full Price</label><input type="number" id="oStdFull" readonly style="background:rgba(255,255,255,0.03)"></div>
@@ -147,11 +147,11 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 <div id="priceAlert" style="display:none;background:rgba(255,107,107,0.2);padding:20px;border-radius:12px;margin:20px 0;border:2px solid #ff6b6b">
 <h3 style="color:#ff6b6b;margin-bottom:10px">⚠️ Price Deviation Detected</h3>
 <p style="color:rgba(255,255,255,0.9);margin-bottom:15px" id="alertMsg"></p>
-<button type="button" class="btn btn-secondary" onclick="document.getElementById('priceAlert').style.display='none'" style="width:100%">✓ Price is Correct, Continue</button>
+<button type="button" class="btn btn-secondary" id="continuePrice" style="width:100%">✓ Price is Correct, Continue</button>
 </div>
 <div class="form-actions">
 <button type="submit" class="btn btn-primary">💾 Save Order</button>
-<button type="button" class="btn btn-danger" onclick="closeOrderModal()">✖ Cancel</button>
+<button type="button" class="btn btn-danger" id="cancelOrder">✖ Cancel</button>
 </div>
 </form>
 </div>
@@ -160,19 +160,19 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 <div id="mainApp">
 <div class="status"><div class="dot"></div><span>Connected</span></div>
 <nav class="nav">
-<button class="nav-btn active" onclick="switchTab('products')">📦 Products</button>
-<button class="nav-btn" onclick="switchTab('orders')">📋 Orders</button>
-<button class="nav-btn" onclick="switchTab('restock')">🔄 Restock</button>
-<button class="nav-btn logout-btn" onclick="logout()">🔓 Logout</button>
+<button class="nav-btn active" data-tab="products">📦 Products</button>
+<button class="nav-btn" data-tab="orders">📋 Orders</button>
+<button class="nav-btn" data-tab="restock">🔄 Restock</button>
+<button class="nav-btn logout-btn" id="logoutBtn">🔓 Logout</button>
 </nav>
 
 <div id="productsTab" class="tab-content active">
 <div class="container">
 <div class="header"><h1>Master Products</h1><p>Product catalog with cost breakdowns</p></div>
 <div class="controls">
-<button class="btn btn-primary" onclick="openModal()">✚ Add Product</button>
-<button class="btn btn-secondary" onclick="exportData()">💾 Export</button>
-<input type="text" class="search-box" id="search" placeholder="🔍 Search..." oninput="filter()">
+<button class="btn btn-primary" id="addProductBtn">✚ Add Product</button>
+<button class="btn btn-secondary" id="exportProductsBtn">💾 Export</button>
+<input type="text" class="search-box" id="search" placeholder="🔍 Search...">
 </div>
 <div class="table-container">
 <table><thead><tr><th>Code</th><th>Description</th><th>Colour</th><th>Variant</th><th>Price</th><th>Cost</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
@@ -185,9 +185,9 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 <div class="container">
 <div class="header"><h1>Orders Log</h1><p>Track sales and customer orders</p></div>
 <div class="controls">
-<button class="btn btn-primary" onclick="openOrderModal()">✚ Add Order</button>
-<button class="btn btn-secondary" onclick="exportOrders()">💾 Export</button>
-<input type="text" class="search-box" id="searchOrders" placeholder="🔍 Search orders..." oninput="filterOrders()">
+<button class="btn btn-primary" id="addOrderBtn">✚ Add Order</button>
+<button class="btn btn-secondary" id="exportOrdersBtn">💾 Export</button>
+<input type="text" class="search-box" id="searchOrders" placeholder="🔍 Search orders...">
 </div>
 <div class="table-container">
 <table><thead><tr><th>Order#</th><th>Date</th><th>Customer</th><th>Code</th><th>Desc</th><th>Colour</th><th>Variant</th><th>Qty</th><th>Discount%</th><th>Cost/Unit</th><th>Profit/Unit</th><th>Total Cost</th><th>Total Profit</th><th>Unit Sale</th><th>Total Sale</th><th>Std Price</th><th>Paid</th><th>Invoice</th><th>Actions</th></tr></thead>
@@ -200,9 +200,9 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 <div class="container">
 <div class="header"><h1>Restock Log</h1><p>Track incoming inventory and supplier orders</p></div>
 <div class="controls">
-<button class="btn btn-primary" onclick="openRestockModal()">✚ Add Restock</button>
-<button class="btn btn-secondary" onclick="exportRestock()">💾 Export</button>
-<input type="text" class="search-box" id="searchRestock" placeholder="🔍 Search restock..." oninput="filterRestock()">
+<button class="btn btn-primary" id="addRestockBtn">✚ Add Restock</button>
+<button class="btn btn-secondary" id="exportRestockBtn">💾 Export</button>
+<input type="text" class="search-box" id="searchRestock" placeholder="🔍 Search restock...">
 </div>
 <div class="table-container">
 <table><thead><tr><th>Date Ordered</th><th>Date Arrived</th><th>Code</th><th>Desc</th><th>Colour</th><th>Variant</th><th>Qty Ordered</th><th>Qty Arrived</th><th>Total Value</th><th>Notes</th><th>Actions</th></tr></thead>
@@ -214,9 +214,9 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 
 <div id="modal" class="modal">
 <div class="modal-content">
-<span class="close" onclick="closeModal()">&times;</span>
+<span class="close" id="closeModal">&times;</span>
 <div class="modal-header"><h2 id="mtitle">Add Product</h2></div>
-<form id="form" onsubmit="save(event)">
+<form id="form">
 <div class="form-grid">
 <div class="form-group"><label>Code *</label><input type="text" id="code" required></div>
 <div class="form-group"><label>Description *</label><input type="text" id="desc" required></div>
@@ -227,110 +227,171 @@ td{padding:12px 8px;white-space:nowrap;font-size:0.9em}
 </div>
 <div class="cost-section">
 <h3>💰 Cost Calculator</h3>
-<div class="form-group"><label>Quantity</label><input type="number" id="qty" value="1" min="1" oninput="calc()"></div>
-<div class="cost-input"><div><label>1. Unit Cost Total</label><input type="number" id="t1" step="0.01" oninput="calc()"></div><div class="cost-result"><label>Per Unit</label><div id="p1">£0.00</div></div></div>
-<div class="cost-input"><div><label>2. Shipping Total</label><input type="number" id="t2" step="0.01" oninput="calc()"></div><div class="cost-result"><label>Per Unit</label><div id="p2">£0.00</div></div></div>
-<div class="cost-input"><div><label>3. Storage Total</label><input type="number" id="t3" step="0.01" oninput="calc()"></div><div class="cost-result"><label>Per Unit</label><div id="p3">£0.00</div></div></div>
-<div class="cost-input"><div><label>4. Delivery Total</label><input type="number" id="t4" step="0.01" oninput="calc()"></div><div class="cost-result"><label>Per Unit</label><div id="p4">£0.00</div></div></div>
-<div class="cost-input"><div><label>5. Packaging Total</label><input type="number" id="t5" step="0.01" oninput="calc()"></div><div class="cost-result"><label>Per Unit</label><div id="p5">£0.00</div></div></div>
-<div class="cost-input"><div><label>6. Other Total</label><input type="number" id="t6" step="0.01" oninput="calc()"></div><div class="cost-result"><label>Per Unit</label><div id="p6">£0.00</div></div></div>
+<div class="form-group"><label>Quantity</label><input type="number" id="qty" value="1" min="1"></div>
+<div class="cost-input"><div><label>1. Unit Cost Total</label><input type="number" id="t1" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="p1">£0.00</div></div></div>
+<div class="cost-input"><div><label>2. Shipping Total</label><input type="number" id="t2" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="p2">£0.00</div></div></div>
+<div class="cost-input"><div><label>3. Storage Total</label><input type="number" id="t3" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="p3">£0.00</div></div></div>
+<div class="cost-input"><div><label>4. Delivery Total</label><input type="number" id="t4" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="p4">£0.00</div></div></div>
+<div class="cost-input"><div><label>5. Packaging Total</label><input type="number" id="t5" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="p5">£0.00</div></div></div>
+<div class="cost-input"><div><label>6. Other Total</label><input type="number" id="t6" step="0.01"></div><div class="cost-result"><label>Per Unit</label><div id="p6">£0.00</div></div></div>
 <div class="cost-total"><h4>TOTAL COST PER UNIT</h4><div class="amount" id="total">£0.00</div></div>
 </div>
 <div class="form-group"><label>Initial Stock</label><input type="number" id="stock" value="0"></div>
 <div class="form-actions">
 <button type="submit" class="btn btn-primary">💾 Save</button>
-<button type="button" class="btn btn-danger" onclick="closeModal()">✖ Cancel</button>
+<button type="button" class="btn btn-danger" id="cancelProduct">✖ Cancel</button>
 </div>
 </form>
 </div>
 </div>
 
-<script type="module">
-const PW="sib123";
-window.checkPass=()=>{if(document.getElementById('pass').value===PW){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';sessionStorage.setItem('a','1')}else{document.getElementById('err').style.display='block';document.getElementById('pass').value='';setTimeout(()=>document.getElementById('err').style.display='none',3000)}};
-if(sessionStorage.getItem('a')==='1'){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block'}
-window.logout=()=>{if(confirm('Logout?')){sessionStorage.clear();location.reload()}};
+<script>
+// Global variables
+let prods = [], orders = [], restocks = [];
+let editId = null, oeditId = null, reditId = null;
+let selProd = null, rselProd = null;
 
-import{initializeApp as I}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import{getFirestore as G,collection as C,addDoc as A,updateDoc as U,deleteDoc as D,doc as d,onSnapshot as O,query as Q}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// Password system
+const PW = "sib123";
+document.getElementById('loginBtn').addEventListener('click', checkPass);
+document.getElementById('pass').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') checkPass();
+});
 
-const app=I({apiKey:"AIzaSyCfwP5ujletDJ0IYb7KG80JDcDXXx-A_vA",authDomain:"bilal-inventory.firebaseapp.com",projectId:"bilal-inventory",storageBucket:"bilal-inventory.firebasestorage.app",messagingSenderId:"89499578022",appId:"1:89499578022:web:775dc112e8b203e02b8e67"});
-const db=G(app);
-let prods=[],orders=[],restocks=[],editId=null,oeditId=null,reditId=null,selProd=null,rselProd=null;
+function checkPass() {
+    const passInput = document.getElementById('pass');
+    const err = document.getElementById('err');
+    if (passInput.value === PW) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        sessionStorage.setItem('a', '1');
+    } else {
+        err.style.display = 'block';
+        passInput.value = '';
+        setTimeout(() => err.style.display = 'none', 3000);
+    }
+}
 
-O(Q(C(db,'products')),s=>{prods=[];s.forEach(doc=>prods.push({id:doc.id,...doc.data()}));prods.sort((a,b)=>{const numA=parseInt(a.code.replace(/\D/g,''))||0;const numB=parseInt(b.code.replace(/\D/g,''))||0;return numA-numB});display(prods);updateProdDropdown();updateRestockDropdown()});
+// Check if already logged in
+if (sessionStorage.getItem('a') === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+}
 
-O(Q(C(db,'orders')),s=>{orders=[];s.forEach(doc=>orders.push({id:doc.id,...doc.data()}));orders.sort((a,b)=>{const numA=parseInt(a.orderNum.replace(/\D/g,''))||0;const numB=parseInt(b.orderNum.replace(/\D/g,''))||0;return numA-numB});displayOrders(orders)});
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    if (confirm('Logout?')) {
+        sessionStorage.clear();
+        location.reload();
+    }
+});
 
-O(Q(C(db,'restocks')),s=>{restocks=[];s.forEach(doc=>restocks.push({id:doc.id,...doc.data()}));restocks.sort((a,b)=>new Date(b.dateArr)-new Date(a.dateArr));displayRestocks(restocks)});
+// Tab switching
+document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const tab = e.target.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tab + 'Tab').classList.add('active');
+        e.target.classList.add('active');
+    });
+});
 
-function display(arr){const b=document.getElementById('tbody');if(!arr.length){b.innerHTML='<tr><td colspan="9" class="empty"><h3>🎯 Ready</h3><p>Add product</p></td></tr>';return}
-b.innerHTML=arr.map(p=>{const st=p.stock===0?'out':p.stock<=p.reorder?'low':'in';return`<tr><td>${p.code}</td><td>${p.desc}</td><td>${p.colour}</td><td>${p.variant}</td><td>£${p.price.toFixed(2)}</td><td class="cost-cell" onclick="toggleCost('${p.id}')">£${p.costTotal.toFixed(2)} ▼<div class="cost-breakdown" id="cost-${p.id}"><div class="cost-item"><span>Unit Cost</span><span>£${p.c1.toFixed(2)}</span></div><div class="cost-item"><span>Shipping</span><span>£${p.c2.toFixed(2)}</span></div><div class="cost-item"><span>Storage</span><span>£${p.c3.toFixed(2)}</span></div><div class="cost-item"><span>Delivery</span><span>£${p.c4.toFixed(2)}</span></div><div class="cost-item"><span>Packaging</span><span>£${p.c5.toFixed(2)}</span></div><div class="cost-item"><span>Other</span><span>£${p.c6.toFixed(2)}</span></div><div class="cost-item"><span>TOTAL</span><span>£${p.costTotal.toFixed(2)}</span></div></div></td><td>${p.stock}</td><td><span class="badge stock-${st}">${st==='in'?'In Stock':st==='low'?'Low':'Out'}</span></td><td><button class="btn btn-primary btn-small" onclick="window.edit('${p.id}')">Edit</button> <button class="btn btn-danger btn-small" onclick="window.del('${p.id}')">Del</button></td></tr>`}).join('')}
+// Modal handlers
+document.getElementById('addProductBtn').addEventListener('click', openModal);
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('cancelProduct').addEventListener('click', closeModal);
 
-window.toggleCost=(id)=>{document.getElementById('cost-'+id).classList.toggle('show')};
-window.calc=()=>{const q=parseFloat(document.getElementById('qty').value)||1;const t1=parseFloat(document.getElementById('t1').value)||0;const t2=parseFloat(document.getElementById('t2').value)||0;const t3=parseFloat(document.getElementById('t3').value)||0;const t4=parseFloat(document.getElementById('t4').value)||0;const t5=parseFloat(document.getElementById('t5').value)||0;const t6=parseFloat(document.getElementById('t6').value)||0;document.getElementById('p1').textContent='£'+(t1/q).toFixed(2);document.getElementById('p2').textContent='£'+(t2/q).toFixed(2);document.getElementById('p3').textContent='£'+(t3/q).toFixed(2);document.getElementById('p4').textContent='£'+(t4/q).toFixed(2);document.getElementById('p5').textContent='£'+(t5/q).toFixed(2);document.getElementById('p6').textContent='£'+(t6/q).toFixed(2);document.getElementById('total').textContent='£'+((t1+t2+t3+t4+t5+t6)/q).toFixed(2)};
+document.getElementById('addOrderBtn').addEventListener('click', openOrderModal);
+document.getElementById('closeOrder').addEventListener('click', closeOrderModal);
+document.getElementById('cancelOrder').addEventListener('click', closeOrderModal);
 
-window.openModal=()=>{editId=null;document.getElementById('mtitle').textContent='Add Product';document.getElementById('form').reset();calc();document.getElementById('modal').style.display='block'};
-window.closeModal=()=>{document.getElementById('modal').style.display='none'};
+document.getElementById('addRestockBtn').addEventListener('click', openRestockModal);
+document.getElementById('closeRestock').addEventListener('click', closeRestockModal);
+document.getElementById('cancelRestock').addEventListener('click', closeRestockModal);
 
-window.save=async(e)=>{e.preventDefault();const q=parseFloat(document.getElementById('qty').value)||1;const t1=parseFloat(document.getElementById('t1').value)||0;const t2=parseFloat(document.getElementById('t2').value)||0;const t3=parseFloat(document.getElementById('t3').value)||0;const t4=parseFloat(document.getElementById('t4').value)||0;const t5=parseFloat(document.getElementById('t5').value)||0;const t6=parseFloat(document.getElementById('t6').value)||0;const p={code:document.getElementById('code').value,desc:document.getElementById('desc').value,colour:document.getElementById('colour').value,variant:document.getElementById('variant').value,price:parseFloat(document.getElementById('price').value),reorder:parseInt(document.getElementById('reorder').value),c1:t1/q,c2:t2/q,c3:t3/q,c4:t4/q,c5:t5/q,c6:t6/q,costTotal:(t1+t2+t3+t4+t5+t6)/q,stock:parseInt(document.getElementById('stock').value),updated:new Date().toISOString()};try{if(editId)await U(d(db,'products',editId),p);else await A(C(db,'products'),p);closeModal()}catch(er){console.error('Save error:',er);alert('Error: '+er.message)}};
+// Close modals when clicking outside
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
 
-window.edit=(id)=>{const p=prods.find(x=>x.id===id);if(p){editId=id;document.getElementById('mtitle').textContent='Edit Product';document.getElementById('code').value=p.code;document.getElementById('desc').value=p.desc;document.getElementById('colour').value=p.colour;document.getElementById('variant').value=p.variant;document.getElementById('price').value=p.price;document.getElementById('reorder').value=p.reorder;document.getElementById('stock').value=p.stock;document.getElementById('qty').value=1;document.getElementById('t1').value=(p.c1*1).toFixed(2);document.getElementById('t2').value=(p.c2*1).toFixed(2);document.getElementById('t3').value=(p.c3*1).toFixed(2);document.getElementById('t4').value=(p.c4*1).toFixed(2);document.getElementById('t5').value=(p.c5*1).toFixed(2);document.getElementById('t6').value=(p.c6*1).toFixed(2);calc();document.getElementById('modal').style.display='block'}};
+// Initialize Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-window.del=async(id)=>{if(confirm('Delete?'))try{await D(d(db,'products',id))}catch(e){alert('Error')}};
+const firebaseConfig = {
+    apiKey: "AIzaSyCfwP5ujletDJ0IYb7KG80JDcDXXx-A_vA",
+    authDomain: "bilal-inventory.firebaseapp.com",
+    projectId: "bilal-inventory",
+    storageBucket: "bilal-inventory.firebasestorage.app",
+    messagingSenderId: "89499578022",
+    appId: "1:89499578022:web:775dc112e8b203e02b8e67"
+};
 
-window.exportData=()=>{const data=JSON.stringify(prods,null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='products.json';a.click()};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-window.filter=()=>{const s=document.getElementById('search').value.toLowerCase();const f=prods.filter(p=>p.code.toLowerCase().includes(s)||p.desc.toLowerCase().includes(s)||p.colour.toLowerCase().includes(s)||p.variant.toLowerCase().includes(s));display(f)};
+// Load products
+const productsQuery = query(collection(db, 'products'));
+onSnapshot(productsQuery, (snapshot) => {
+    prods = [];
+    snapshot.forEach(doc => {
+        prods.push({ id: doc.id, ...doc.data() });
+    });
+    prods.sort((a, b) => {
+        const numA = parseInt(a.code.replace(/\D/g, '')) || 0;
+        const numB = parseInt(b.code.replace(/\D/g, '')) || 0;
+        return numA - numB;
+    });
+    display(prods);
+    updateProdDropdown();
+    updateRestockDropdown();
+});
 
-window.switchTab=(tab)=>{document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById(tab+'Tab').classList.add('active');event.target.classList.add('active')};
+// Load orders
+const ordersQuery = query(collection(db, 'orders'));
+onSnapshot(ordersQuery, (snapshot) => {
+    orders = [];
+    snapshot.forEach(doc => {
+        orders.push({ id: doc.id, ...doc.data() });
+    });
+    orders.sort((a, b) => {
+        const numA = parseInt(a.orderNum.replace(/\D/g, '')) || 0;
+        const numB = parseInt(b.orderNum.replace(/\D/g, '')) || 0;
+        return numA - numB;
+    });
+    displayOrders(orders);
+});
 
-function updateProdDropdown(){const sel=document.getElementById('oProd');sel.innerHTML='<option value="">Select Product</option>'+prods.map(p=>`<option value="${p.id}">${p.code} - ${p.desc} ${p.colour} ${p.variant}</option>`).join('')}
+// Load restocks
+const restocksQuery = query(collection(db, 'restocks'));
+onSnapshot(restocksQuery, (snapshot) => {
+    restocks = [];
+    snapshot.forEach(doc => {
+        restocks.push({ id: doc.id, ...doc.data() });
+    });
+    restocks.sort((a, b) => new Date(b.dateArr) - new Date(a.dateArr));
+    displayRestocks(restocks);
+});
 
-window.loadProduct=()=>{const id=document.getElementById('oProd').value;selProd=prods.find(p=>p.id===id);if(selProd){document.getElementById('oDesc').value=selProd.desc;document.getElementById('oCol').value=selProd.colour;document.getElementById('oVar').value=selProd.variant;document.getElementById('oPrice').value=selProd.price;document.getElementById('oStd').value=selProd.price;document.getElementById('oCost').value=selProd.costTotal;calcOrder()}};
-
-window.calcOrder=()=>{if(!selProd)return;const qty=parseInt(document.getElementById('oQty').value)||0;const price=parseFloat(document.getElementById('oPrice').value)||0;const std=selProd.price;const cost=selProd.costTotal;const total=price*qty;const stdFull=std*qty;const disc=std>0?((std-price)/std*100).toFixed(1):0;const profitUnit=price-cost;const totalCost=cost*qty;const totalProfit=profitUnit*qty;document.getElementById('oTotal').value=total.toFixed(2);document.getElementById('oStdFull').value=stdFull.toFixed(2);document.getElementById('oDisc').value=disc+'%';document.getElementById('oProfit').value=profitUnit.toFixed(2);document.getElementById('oTotalCost').value=totalCost.toFixed(2);document.getElementById('oTotalProfit').value=totalProfit.toFixed(2);const isSample=document.getElementById('isSample').checked;const threshold=20;const devPct=Math.abs(((price-std)/std)*100);if(!isSample&&devPct>threshold){document.getElementById('alertMsg').textContent=`Standard: £${std.toFixed(2)}, Entered: £${price.toFixed(2)} (${devPct.toFixed(0)}% ${price>std?'above':'below'} standard). Is this correct?`;document.getElementById('priceAlert').style.display='block'}else{document.getElementById('priceAlert').style.display='none'}};
-
-window.openOrderModal=()=>{oeditId=null;selProd=null;document.getElementById('otitle').textContent='Add Order';document.getElementById('oform').reset();document.getElementById('oDate').valueAsDate=new Date();document.getElementById('oPaid').value='No';document.getElementById('priceAlert').style.display='none';document.getElementById('orderModal').style.display='block'};
-
-window.closeOrderModal=()=>{document.getElementById('orderModal').style.display='none'};
-
-window.saveOrder=async(e)=>{e.preventDefault();if(!selProd){alert('Select product');return}const qty=parseInt(document.getElementById('oQty').value);if(!oeditId&&selProd.stock<qty){if(!confirm(`Only ${selProd.stock} in stock. Continue?`))return}const o={orderNum:document.getElementById('oNum').value,date:document.getElementById('oDate').value,customer:document.getElementById('oCust').value,prodId:selProd.id,prodCode:selProd.code,desc:selProd.desc,colour:selProd.colour,variant:selProd.variant,qty:qty,unitPrice:parseFloat(document.getElementById('oPrice').value),totalPrice:parseFloat(document.getElementById('oTotal').value),stdPrice:selProd.price,stdFull:parseFloat(document.getElementById('oStdFull').value),discount:document.getElementById('oDisc').value,costUnit:selProd.costTotal,profitUnit:parseFloat(document.getElementById('oProfit').value),totalCost:parseFloat(document.getElementById('oTotalCost').value),totalProfit:parseFloat(document.getElementById('oTotalProfit').value),paid:document.getElementById('oPaid').value,collDate:document.getElementById('oCollDate').value,invoice:document.getElementById('oInv').value,notes:document.getElementById('oNotes').value,isSample:document.getElementById('isSample').checked,created:new Date().toISOString()};try{if(oeditId){const oldOrder=orders.find(x=>x.id===oeditId);await U(d(db,'orders',oeditId),o);const stockDiff=oldOrder.qty-qty;await U(d(db,'products',selProd.id),{stock:selProd.stock+stockDiff})}else{await A(C(db,'orders'),o);await U(d(db,'products',selProd.id),{stock:selProd.stock-qty})}closeOrderModal()}catch(er){console.error(er);alert('Error: '+er.message)}};
-
-function displayOrders(arr){const b=document.getElementById('ordersBody');if(!arr.length){b.innerHTML='<tr><td colspan="19" class="empty"><h3>📋 No Orders</h3><p>Add first order</p></td></tr>';return}
-b.innerHTML=arr.map(o=>{const profitColor=o.totalProfit>=0?'#10b981':'#ff6b6b';const sampleBadge=o.isSample?' <span class="badge" style="background:#f59e0b;font-size:0.7em;padding:2px 6px">S</span>':'';return`<tr style="${o.isSample?'background:rgba(245,158,11,0.08)':''}"><td>${o.orderNum}${sampleBadge}</td><td>${o.date}</td><td>${o.customer}</td><td>${o.prodCode}</td><td>${o.desc}</td><td>${o.colour}</td><td>${o.variant}</td><td>${o.qty}</td><td>${o.discount}</td><td>£${o.costUnit.toFixed(2)}</td><td style="color:${profitColor}">£${o.profitUnit.toFixed(2)}</td><td>£${o.totalCost.toFixed(2)}</td><td style="color:${profitColor};font-weight:600">£${o.totalProfit.toFixed(2)}</td><td>£${o.unitPrice.toFixed(2)}</td><td>£${o.totalPrice.toFixed(2)}</td><td>£${o.stdPrice.toFixed(2)}</td><td><span class="badge ${o.paid==='Yes'?'stock-in':o.paid==='No'?'stock-out':'stock-low'}" style="font-size:0.75em;padding:3px 8px">${o.paid}</span></td><td>${o.invoice||'-'}</td><td><button class="btn btn-primary btn-small" onclick="editOrder('${o.id}')" style="padding:4px 10px;font-size:0.75em;margin-right:4px">Edit</button><button class="btn btn-danger btn-small" onclick="delOrder('${o.id}','${o.prodId}',${o.qty})" style="padding:4px 10px;font-size:0.75em">Del</button></td></tr>`}).join('')}
-
-window.delOrder=async(id,prodId,qty)=>{if(confirm('Delete order? Stock will be restored.'))try{await D(d(db,'orders',id));const prod=prods.find(p=>p.id===prodId);if(prod)await U(d(db,'products',prodId),{stock:prod.stock+qty})}catch(e){alert('Error')}};
-
-window.exportOrders=()=>{const data=JSON.stringify(orders,null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='orders.json';a.click()};
-
-window.filterOrders=()=>{const s=document.getElementById('searchOrders').value.toLowerCase();const f=orders.filter(o=>o.orderNum.toLowerCase().includes(s)||o.customer.toLowerCase().includes(s)||o.prodCode.toLowerCase().includes(s));displayOrders(f)};
-
-window.editOrder=(id)=>{const o=orders.find(x=>x.id===id);if(!o)return;oeditId=id;selProd=prods.find(p=>p.id===o.prodId);document.getElementById('otitle').textContent='Edit Order';document.getElementById('oNum').value=o.orderNum;document.getElementById('oDate').value=o.date;document.getElementById('oCust').value=o.customer;document.getElementById('oProd').value=o.prodId;loadProduct();document.getElementById('oQty').value=o.qty;document.getElementById('oPrice').value=o.unitPrice;document.getElementById('oPaid').value=o.paid;document.getElementById('oCollDate').value=o.collDate;document.getElementById('oInv').value=o.invoice;document.getElementById('oNotes').value=o.notes;document.getElementById('isSample').checked=o.isSample;calcOrder();document.getElementById('orderModal').style.display='block'};
-
-function updateRestockDropdown(){const sel=document.getElementById('rProd');sel.innerHTML='<option value="">Select Product</option>'+prods.map(p=>`<option value="${p.id}">${p.code} - ${p.desc} ${p.colour} ${p.variant}</option>`).join('')}
-
-window.loadRestockProduct=()=>{const id=document.getElementById('rProd').value;rselProd=prods.find(p=>p.id===id);if(rselProd){document.getElementById('rDesc').value=rselProd.desc;document.getElementById('rCol').value=rselProd.colour;document.getElementById('rVar').value=rselProd.variant;document.getElementById('rQty').value=1;document.getElementById('rt1').value=(rselProd.c1*1).toFixed(2);document.getElementById('rt2').value=(rselProd.c2*1).toFixed(2);document.getElementById('rt3').value=(rselProd.c3*1).toFixed(2);document.getElementById('rt4').value=(rselProd.c4*1).toFixed(2);document.getElementById('rt5').value=(rselProd.c5*1).toFixed(2);document.getElementById('rt6').value=(rselProd.c6*1).toFixed(2);calcRestock()}};
-
-window.calcRestock=()=>{const q=parseFloat(document.getElementById('rQty').value)||1;const t1=parseFloat(document.getElementById('rt1').value)||0;const t2=parseFloat(document.getElementById('rt2').value)||0;const t3=parseFloat(document.getElementById('rt3').value)||0;const t4=parseFloat(document.getElementById('rt4').value)||0;const t5=parseFloat(document.getElementById('rt5').value)||0;const t6=parseFloat(document.getElementById('rt6').value)||0;document.getElementById('rp1').textContent='£'+(t1/q).toFixed(2);document.getElementById('rp2').textContent='£'+(t2/q).toFixed(2);document.getElementById('rp3').textContent='£'+(t3/q).toFixed(2);document.getElementById('rp4').textContent='£'+(t4/q).toFixed(2);document.getElementById('rp5').textContent='£'+(t5/q).toFixed(2);document.getElementById('rp6').textContent='£'+(t6/q).toFixed(2);const perUnit=(t1+t2+t3+t4+t5+t6)/q;document.getElementById('rtotal').textContent='£'+perUnit.toFixed(2);document.getElementById('rorderval').textContent='£'+(t1+t2+t3+t4+t5+t6).toFixed(2)};
-
-window.openRestockModal=()=>{console.log('Opening restock modal');reditId=null;rselProd=null;document.getElementById('rtitle').textContent='Add Restock';document.getElementById('rform').reset();const today=new Date().toISOString().split('T')[0];document.getElementById('rDateOrd').value=today;document.getElementById('rDateArr').value=today;calcRestock();document.getElementById('restockModal').style.display='block';console.log('Modal display set to block')};
-
-window.closeRestockModal=()=>{document.getElementById('restockModal').style.display='none'};
-
-window.saveRestock=async(e)=>{e.preventDefault();if(!rselProd){alert('Select product');return}const q=parseFloat(document.getElementById('rQty').value)||1;const t1=parseFloat(document.getElementById('rt1').value)||0;const t2=parseFloat(document.getElementById('rt2').value)||0;const t3=parseFloat(document.getElementById('rt3').value)||0;const t4=parseFloat(document.getElementById('rt4').value)||0;const t5=parseFloat(document.getElementById('rt5').value)||0;const t6=parseFloat(document.getElementById('rt6').value)||0;const qtyArr=parseInt(document.getElementById('rQtyArr').value);const r={dateOrd:document.getElementById('rDateOrd').value,dateArr:document.getElementById('rDateArr').value,prodId:rselProd.id,prodCode:rselProd.code,desc:rselProd.desc,colour:rselProd.colour,variant:rselProd.variant,qtyOrd:parseInt(document.getElementById('rQtyOrd').value),qtyArr:qtyArr,c1:t1/q,c2:t2/q,c3:t3/q,c4:t4/q,c5:t5/q,c6:t6/q,costTotal:(t1+t2+t3+t4+t5+t6)/q,orderVal:t1+t2+t3+t4+t5+t6,notes:document.getElementById('rNotes').value,created:new Date().toISOString()};try{await A(C(db,'restocks'),r);await U(d(db,'products',rselProd.id),{stock:rselProd.stock+qtyArr,c1:t1/q,c2:t2/q,c3:t3/q,c4:t4/q,c5:t5/q,c6:t6/q,costTotal:(t1+t2+t3+t4+t5+t6)/q});closeRestockModal()}catch(er){console.error(er);alert('Error: '+er.message)}};
-
-function displayRestocks(arr){const b=document.getElementById('restockBody');if(!arr.length){b.innerHTML='<tr><td colspan="11" class="empty"><h3>📦 No Restocks</h3><p>Add first restock</p></td></tr>';return}
-b.innerHTML=arr.map(r=>{const qtyMatch=r.qtyOrd===r.qtyArr;return`<tr><td>${r.dateOrd}</td><td>${r.dateArr}</td><td>${r.prodCode}</td><td>${r.desc}</td><td>${r.colour}</td><td>${r.variant}</td><td>${r.qtyOrd}</td><td style="color:${qtyMatch?'#10b981':'#f59e0b'}">${r.qtyArr}${!qtyMatch?' ⚠️':''}</td><td>£${r.orderVal.toFixed(2)}</td><td>${r.notes||'-'}</td><td><button class="btn btn-danger btn-small" onclick="delRestock('${r.id}','${r.prodId}',${r.qtyArr})" style="padding:4px 10px;font-size:0.75em">Del</button></td></tr>`}).join('')}
-
-window.delRestock=async(id,prodId,qty)=>{if(confirm('Delete restock? Stock will be reduced.'))try{await D(d(db,'restocks',id));const prod=prods.find(p=>p.id===prodId);if(prod)await U(d(db,'products',prodId),{stock:prod.stock-qty})}catch(e){alert('Error')}};
-
-window.exportRestock=()=>{const data=JSON.stringify(restocks,null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='restocks.json';a.click()};
-
-window.filterRestock=()=>{const s=document.getElementById('searchRestock').value.toLowerCase();const f=restocks.filter(r=>r.prodCode.toLowerCase().includes(s)||r.desc.toLowerCase().includes(s));displayRestocks(f)};
-
-window.onclick=e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='orderModal')closeOrderModal();if(e.target.id==='restockModal')closeRestockModal()};
-
-</script>
-</body>
-</html>
+// Product functions
+function display(arr) {
+    const tbody = document.getElementById('tbody');
+    if (!arr.length) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty"><h3>🎯 Ready</h3><p>Add product</p></td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = arr.map(p => {
+        const status = p.stock === 0 ? 'out' : p.stock <= p.reorder ? 'low' : 'in';
+        return `<tr>
+            <td>${p.code}</td>
+            <td>${p.desc}</td>
+            <td>${p.colour}</td>
+            <td>${p.variant}</td>
+            <td>£${p.price.toFixed(2)}</td>
+            <td class="cost-cell"
